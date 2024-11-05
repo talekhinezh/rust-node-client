@@ -19,6 +19,7 @@ pub enum ResourceAmount {
         /// The Bech32m-encoded human readable version of the resource address
         #[serde(rename = "resource_address")]
         resource_address: String,
+        amount: String,
     },
     #[serde(rename="NonFungible")]
     NonFungibleResourceAmount {
@@ -32,8 +33,8 @@ impl Default for ResourceAmount {
     fn default() -> Self {
         Self::FungibleResourceAmount {
             resource_address: Default::default(),
+            amount: Default::default(),
         }
-        
     }
 }
 

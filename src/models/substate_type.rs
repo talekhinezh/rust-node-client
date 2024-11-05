@@ -14,6 +14,8 @@ use serde::{Deserialize, Serialize};
 /// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum SubstateType {
+    #[serde(rename = "BootLoaderModuleFieldTransactionValidationConfiguration")]
+    BootLoaderModuleFieldTransactionValidationConfiguration,
     #[serde(rename = "BootLoaderModuleFieldVmBoot")]
     BootLoaderModuleFieldVmBoot,
     #[serde(rename = "TypeInfoModuleFieldTypeInfo")]
@@ -128,6 +130,7 @@ pub enum SubstateType {
 impl std::fmt::Display for SubstateType {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
+            Self::BootLoaderModuleFieldTransactionValidationConfiguration => write!(f, "BootLoaderModuleFieldTransactionValidationConfiguration"),
             Self::BootLoaderModuleFieldVmBoot => write!(f, "BootLoaderModuleFieldVmBoot"),
             Self::TypeInfoModuleFieldTypeInfo => write!(f, "TypeInfoModuleFieldTypeInfo"),
             Self::RoleAssignmentModuleFieldOwnerRole => write!(f, "RoleAssignmentModuleFieldOwnerRole"),

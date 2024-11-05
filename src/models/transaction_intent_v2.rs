@@ -12,35 +12,29 @@ use crate::models;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TransactionIntent {
+pub struct TransactionIntentV2 {
     /// The hex-encoded transaction intent hash for a user transaction, also known as the transaction id. This hash identifies the core \"intent\" of the transaction. Each transaction intent can only be committed once. This hash gets signed by any signatories on the transaction, to create the signed intent. 
     #[serde(rename = "hash")]
     pub hash: String,
     /// The Bech32m-encoded human readable `TransactionIntentHash`.
     #[serde(rename = "hash_bech32m")]
     pub hash_bech32m: String,
-    #[serde(rename = "header")]
-    pub header: Box<models::TransactionHeader>,
-    /// The decompiled transaction manifest instructions. Only returned if enabled in `TransactionFormatOptions` on your request.
-    #[serde(rename = "instructions", skip_serializing_if = "Option::is_none")]
-    pub instructions: Option<String>,
-    /// A map of the hex-encoded blob hash, to hex-encoded blob content. Only returned if enabled in `TransactionFormatOptions` on your request.
-    #[serde(rename = "blobs_hex", skip_serializing_if = "Option::is_none")]
-    pub blobs_hex: Option<std::collections::HashMap<String, String>>,
-    /// The optional transaction message. Only returned if present and enabled in `TransactionFormatOptions` on your request.
-    #[serde(rename = "message", skip_serializing_if = "Option::is_none")]
-    pub message: Option<Box<models::TransactionMessage>>,
+    #[serde(rename = "transaction_header")]
+    pub transaction_header: Box<models::TransactionHeaderV2>,
+    #[serde(rename = "root_intent_core")]
+    pub root_intent_core: Box<models::IntentCoreV2>,
+    #[serde(rename = "non_root_subintents")]
+    pub non_root_subintents: Vec<models::SubintentV2>,
 }
 
-impl TransactionIntent {
-    pub fn new(hash: String, hash_bech32m: String, header: models::TransactionHeader) -> TransactionIntent {
-        TransactionIntent {
+impl TransactionIntentV2 {
+    pub fn new(hash: String, hash_bech32m: String, transaction_header: models::TransactionHeaderV2, root_intent_core: models::IntentCoreV2, non_root_subintents: Vec<models::SubintentV2>) -> TransactionIntentV2 {
+        TransactionIntentV2 {
             hash,
             hash_bech32m,
-            header: Box::new(header),
-            instructions: None,
-            blobs_hex: None,
-            message: None,
+            transaction_header: Box::new(transaction_header),
+            root_intent_core: Box::new(root_intent_core),
+            non_root_subintents,
         }
     }
 }

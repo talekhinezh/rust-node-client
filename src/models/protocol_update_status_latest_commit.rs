@@ -12,35 +12,24 @@ use crate::models;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TransactionIntent {
-    /// The hex-encoded transaction intent hash for a user transaction, also known as the transaction id. This hash identifies the core \"intent\" of the transaction. Each transaction intent can only be committed once. This hash gets signed by any signatories on the transaction, to create the signed intent. 
-    #[serde(rename = "hash")]
-    pub hash: String,
-    /// The Bech32m-encoded human readable `TransactionIntentHash`.
-    #[serde(rename = "hash_bech32m")]
-    pub hash_bech32m: String,
-    #[serde(rename = "header")]
-    pub header: Box<models::TransactionHeader>,
-    /// The decompiled transaction manifest instructions. Only returned if enabled in `TransactionFormatOptions` on your request.
-    #[serde(rename = "instructions", skip_serializing_if = "Option::is_none")]
-    pub instructions: Option<String>,
-    /// A map of the hex-encoded blob hash, to hex-encoded blob content. Only returned if enabled in `TransactionFormatOptions` on your request.
-    #[serde(rename = "blobs_hex", skip_serializing_if = "Option::is_none")]
-    pub blobs_hex: Option<std::collections::HashMap<String, String>>,
-    /// The optional transaction message. Only returned if present and enabled in `TransactionFormatOptions` on your request.
-    #[serde(rename = "message", skip_serializing_if = "Option::is_none")]
-    pub message: Option<Box<models::TransactionMessage>>,
+pub struct ProtocolUpdateStatusLatestCommit {
+    #[serde(rename = "batch_group_index")]
+    pub batch_group_index: i64,
+    #[serde(rename = "batch_group_name")]
+    pub batch_group_name: String,
+    #[serde(rename = "batch_index")]
+    pub batch_index: i64,
+    #[serde(rename = "batch_name")]
+    pub batch_name: String,
 }
 
-impl TransactionIntent {
-    pub fn new(hash: String, hash_bech32m: String, header: models::TransactionHeader) -> TransactionIntent {
-        TransactionIntent {
-            hash,
-            hash_bech32m,
-            header: Box::new(header),
-            instructions: None,
-            blobs_hex: None,
-            message: None,
+impl ProtocolUpdateStatusLatestCommit {
+    pub fn new(batch_group_index: i64, batch_group_name: String, batch_index: i64, batch_name: String) -> ProtocolUpdateStatusLatestCommit {
+        ProtocolUpdateStatusLatestCommit {
+            batch_group_index,
+            batch_group_name,
+            batch_index,
+            batch_name,
         }
     }
 }

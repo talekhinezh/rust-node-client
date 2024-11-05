@@ -14,10 +14,16 @@ use serde::{Deserialize, Serialize};
 /// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum SubstateType {
-    #[serde(rename = "BootLoaderModuleFieldTransactionValidationConfiguration")]
-    BootLoaderModuleFieldTransactionValidationConfiguration,
+    #[serde(rename = "BootLoaderModuleFieldSystemBoot")]
+    BootLoaderModuleFieldSystemBoot,
+    #[serde(rename = "BootLoaderModuleFieldKernelBoot")]
+    BootLoaderModuleFieldKernelBoot,
     #[serde(rename = "BootLoaderModuleFieldVmBoot")]
     BootLoaderModuleFieldVmBoot,
+    #[serde(rename = "BootLoaderModuleFieldTransactionValidationConfiguration")]
+    BootLoaderModuleFieldTransactionValidationConfiguration,
+    #[serde(rename = "ProtocolUpdateStatusModuleFieldSummary")]
+    ProtocolUpdateStatusModuleFieldSummary,
     #[serde(rename = "TypeInfoModuleFieldTypeInfo")]
     TypeInfoModuleFieldTypeInfo,
     #[serde(rename = "RoleAssignmentModuleFieldOwnerRole")]
@@ -120,18 +126,17 @@ pub enum SubstateType {
     TransactionTrackerCollectionEntry,
     #[serde(rename = "AccountLockerAccountClaimsEntry")]
     AccountLockerAccountClaimsEntry,
-    #[serde(rename = "BootLoaderModuleFieldSystemBoot")]
-    BootLoaderModuleFieldSystemBoot,
-    #[serde(rename = "BootLoaderModuleFieldKernelBoot")]
-    BootLoaderModuleFieldKernelBoot,
 
 }
 
 impl std::fmt::Display for SubstateType {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            Self::BootLoaderModuleFieldTransactionValidationConfiguration => write!(f, "BootLoaderModuleFieldTransactionValidationConfiguration"),
+            Self::BootLoaderModuleFieldSystemBoot => write!(f, "BootLoaderModuleFieldSystemBoot"),
+            Self::BootLoaderModuleFieldKernelBoot => write!(f, "BootLoaderModuleFieldKernelBoot"),
             Self::BootLoaderModuleFieldVmBoot => write!(f, "BootLoaderModuleFieldVmBoot"),
+            Self::BootLoaderModuleFieldTransactionValidationConfiguration => write!(f, "BootLoaderModuleFieldTransactionValidationConfiguration"),
+            Self::ProtocolUpdateStatusModuleFieldSummary => write!(f, "ProtocolUpdateStatusModuleFieldSummary"),
             Self::TypeInfoModuleFieldTypeInfo => write!(f, "TypeInfoModuleFieldTypeInfo"),
             Self::RoleAssignmentModuleFieldOwnerRole => write!(f, "RoleAssignmentModuleFieldOwnerRole"),
             Self::RoleAssignmentModuleRuleEntry => write!(f, "RoleAssignmentModuleRuleEntry"),
@@ -183,15 +188,13 @@ impl std::fmt::Display for SubstateType {
             Self::TransactionTrackerFieldState => write!(f, "TransactionTrackerFieldState"),
             Self::TransactionTrackerCollectionEntry => write!(f, "TransactionTrackerCollectionEntry"),
             Self::AccountLockerAccountClaimsEntry => write!(f, "AccountLockerAccountClaimsEntry"),
-            Self::BootLoaderModuleFieldSystemBoot => write!(f, "BootLoaderModuleFieldSystemBoot"),
-            Self::BootLoaderModuleFieldKernelBoot => write!(f, "BootLoaderModuleFieldKernelBoot"),
         }
     }
 }
 
 impl Default for SubstateType {
     fn default() -> SubstateType {
-        Self::BootLoaderModuleFieldVmBoot
+        Self::BootLoaderModuleFieldSystemBoot
     }
 }
 

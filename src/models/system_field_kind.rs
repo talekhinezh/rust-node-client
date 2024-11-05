@@ -22,6 +22,10 @@ pub enum SystemFieldKind {
     SystemBoot,
     #[serde(rename = "KernelBoot")]
     KernelBoot,
+    #[serde(rename = "TransactionValidationConfiguration")]
+    TransactionValidationConfiguration,
+    #[serde(rename = "ProtocolUpdateStatusSummary")]
+    ProtocolUpdateStatusSummary,
 
 }
 
@@ -32,6 +36,8 @@ impl std::fmt::Display for SystemFieldKind {
             Self::TypeInfo => write!(f, "TypeInfo"),
             Self::SystemBoot => write!(f, "SystemBoot"),
             Self::KernelBoot => write!(f, "KernelBoot"),
+            Self::TransactionValidationConfiguration => write!(f, "TransactionValidationConfiguration"),
+            Self::ProtocolUpdateStatusSummary => write!(f, "ProtocolUpdateStatusSummary"),
         }
     }
 }

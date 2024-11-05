@@ -12,35 +12,23 @@ use crate::models;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TransactionIntent {
-    /// The hex-encoded transaction intent hash for a user transaction, also known as the transaction id. This hash identifies the core \"intent\" of the transaction. Each transaction intent can only be committed once. This hash gets signed by any signatories on the transaction, to create the signed intent. 
-    #[serde(rename = "hash")]
-    pub hash: String,
-    /// The Bech32m-encoded human readable `TransactionIntentHash`.
-    #[serde(rename = "hash_bech32m")]
-    pub hash_bech32m: String,
-    #[serde(rename = "header")]
-    pub header: Box<models::TransactionHeader>,
-    /// The decompiled transaction manifest instructions. Only returned if enabled in `TransactionFormatOptions` on your request.
-    #[serde(rename = "instructions", skip_serializing_if = "Option::is_none")]
-    pub instructions: Option<String>,
-    /// A map of the hex-encoded blob hash, to hex-encoded blob content. Only returned if enabled in `TransactionFormatOptions` on your request.
-    #[serde(rename = "blobs_hex", skip_serializing_if = "Option::is_none")]
-    pub blobs_hex: Option<std::collections::HashMap<String, String>>,
-    /// The optional transaction message. Only returned if present and enabled in `TransactionFormatOptions` on your request.
-    #[serde(rename = "message", skip_serializing_if = "Option::is_none")]
-    pub message: Option<Box<models::TransactionMessage>>,
+pub struct TransactionHeaderV2 {
+    #[serde(rename = "notary_public_key")]
+    pub notary_public_key: Box<models::PublicKey>,
+    /// Specifies whether the notary public key should be included in the transaction signers list
+    #[serde(rename = "notary_is_signatory")]
+    pub notary_is_signatory: bool,
+    /// An integer between `0` and `2^32 - 1 = 4294967295`, giving the validator tip as a basis points amount. That is, a value of `1` corresponds to an additional tip on 0.01% of the base fee. 
+    #[serde(rename = "tip_basis_points")]
+    pub tip_basis_points: i64,
 }
 
-impl TransactionIntent {
-    pub fn new(hash: String, hash_bech32m: String, header: models::TransactionHeader) -> TransactionIntent {
-        TransactionIntent {
-            hash,
-            hash_bech32m,
-            header: Box::new(header),
-            instructions: None,
-            blobs_hex: None,
-            message: None,
+impl TransactionHeaderV2 {
+    pub fn new(notary_public_key: models::PublicKey, notary_is_signatory: bool, tip_basis_points: i64) -> TransactionHeaderV2 {
+        TransactionHeaderV2 {
+            notary_public_key: Box::new(notary_public_key),
+            notary_is_signatory,
+            tip_basis_points,
         }
     }
 }

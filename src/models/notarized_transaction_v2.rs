@@ -12,35 +12,30 @@ use crate::models;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TransactionIntent {
-    /// The hex-encoded transaction intent hash for a user transaction, also known as the transaction id. This hash identifies the core \"intent\" of the transaction. Each transaction intent can only be committed once. This hash gets signed by any signatories on the transaction, to create the signed intent. 
+pub struct NotarizedTransactionV2 {
+    /// The hex-encoded notarized transaction hash for a user transaction. This hash identifies the full submittable notarized transaction - ie the signed intent, plus the notary signature. 
     #[serde(rename = "hash")]
     pub hash: String,
-    /// The Bech32m-encoded human readable `TransactionIntentHash`.
+    /// The Bech32m-encoded human readable `NotarizedTransactionHash`.
     #[serde(rename = "hash_bech32m")]
     pub hash_bech32m: String,
-    #[serde(rename = "header")]
-    pub header: Box<models::TransactionHeader>,
-    /// The decompiled transaction manifest instructions. Only returned if enabled in `TransactionFormatOptions` on your request.
-    #[serde(rename = "instructions", skip_serializing_if = "Option::is_none")]
-    pub instructions: Option<String>,
-    /// A map of the hex-encoded blob hash, to hex-encoded blob content. Only returned if enabled in `TransactionFormatOptions` on your request.
-    #[serde(rename = "blobs_hex", skip_serializing_if = "Option::is_none")]
-    pub blobs_hex: Option<std::collections::HashMap<String, String>>,
-    /// The optional transaction message. Only returned if present and enabled in `TransactionFormatOptions` on your request.
-    #[serde(rename = "message", skip_serializing_if = "Option::is_none")]
-    pub message: Option<Box<models::TransactionMessage>>,
+    /// The hex-encoded full notarized transaction payload. Returning this can be disabled in TransactionFormatOptions on your request (default true).
+    #[serde(rename = "payload_hex", skip_serializing_if = "Option::is_none")]
+    pub payload_hex: Option<String>,
+    #[serde(rename = "signed_transaction_intent")]
+    pub signed_transaction_intent: Box<models::SignedTransactionIntentV2>,
+    #[serde(rename = "notary_signature")]
+    pub notary_signature: Box<models::Signature>,
 }
 
-impl TransactionIntent {
-    pub fn new(hash: String, hash_bech32m: String, header: models::TransactionHeader) -> TransactionIntent {
-        TransactionIntent {
+impl NotarizedTransactionV2 {
+    pub fn new(hash: String, hash_bech32m: String, signed_transaction_intent: models::SignedTransactionIntentV2, notary_signature: models::Signature) -> NotarizedTransactionV2 {
+        NotarizedTransactionV2 {
             hash,
             hash_bech32m,
-            header: Box::new(header),
-            instructions: None,
-            blobs_hex: None,
-            message: None,
+            payload_hex: None,
+            signed_transaction_intent: Box::new(signed_transaction_intent),
+            notary_signature: Box::new(notary_signature),
         }
     }
 }

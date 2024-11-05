@@ -17,6 +17,8 @@ use serde::{Deserialize, Serialize};
 pub enum ParsedTransactionType {
     #[serde(rename = "NotarizedTransaction")]
     NotarizedTransaction,
+    #[serde(rename = "NotarizedTransactionV2")]
+    NotarizedTransactionV2,
     #[serde(rename = "SignedTransactionIntent")]
     SignedTransactionIntent,
     #[serde(rename = "TransactionIntent")]
@@ -30,6 +32,7 @@ impl std::fmt::Display for ParsedTransactionType {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
             Self::NotarizedTransaction => write!(f, "NotarizedTransaction"),
+            Self::NotarizedTransactionV2 => write!(f, "NotarizedTransactionV2"),
             Self::SignedTransactionIntent => write!(f, "SignedTransactionIntent"),
             Self::TransactionIntent => write!(f, "TransactionIntent"),
             Self::LedgerTransaction => write!(f, "LedgerTransaction"),

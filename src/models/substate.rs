@@ -54,6 +54,11 @@ pub enum Substate {
         #[serde(rename = "is_locked")]
         is_locked: bool,
     },
+    #[serde(rename="BootLoaderModuleFieldTransactionValidationConfiguration")]
+    BootLoaderModuleFieldTransactionValidationConfigurationSubstate {
+        #[serde(rename = "is_locked")]
+        is_locked: bool,
+    },
     #[serde(rename="BootLoaderModuleFieldVmBoot")]
     BootLoaderModuleFieldVmBootSubstate {
         #[serde(rename = "is_locked")]
@@ -216,6 +221,11 @@ pub enum Substate {
     },
     #[serde(rename="PackageFieldRoyaltyAccumulator")]
     PackageFieldRoyaltyAccumulatorSubstate {
+        #[serde(rename = "is_locked")]
+        is_locked: bool,
+    },
+    #[serde(rename="ProtocolUpdateStatusModuleFieldSummary")]
+    ProtocolUpdateStatusModuleFieldSummarySubstate {
         #[serde(rename = "is_locked")]
         is_locked: bool,
     },

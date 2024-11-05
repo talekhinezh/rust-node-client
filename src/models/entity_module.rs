@@ -28,6 +28,8 @@ pub enum EntityModule {
     Schema,
     #[serde(rename = "BootLoader")]
     BootLoader,
+    #[serde(rename = "ProtocolUpdateStatus")]
+    ProtocolUpdateStatus,
 
 }
 
@@ -41,6 +43,7 @@ impl std::fmt::Display for EntityModule {
             Self::Main => write!(f, "Main"),
             Self::Schema => write!(f, "Schema"),
             Self::BootLoader => write!(f, "BootLoader"),
+            Self::ProtocolUpdateStatus => write!(f, "ProtocolUpdateStatus"),
         }
     }
 }

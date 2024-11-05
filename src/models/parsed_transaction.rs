@@ -20,6 +20,9 @@ pub enum ParsedTransaction {
     #[serde(rename="NotarizedTransaction")]
     ParsedNotarizedTransaction {
     },
+    #[serde(rename="NotarizedTransactionV2")]
+    ParsedNotarizedTransactionV2 {
+    },
     #[serde(rename="SignedTransactionIntent")]
     ParsedSignedTransactionIntent {
     },

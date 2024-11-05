@@ -17,8 +17,10 @@ use serde::{Deserialize, Serialize};
 pub enum LedgerTransactionType {
     #[serde(rename = "Genesis")]
     Genesis,
-    #[serde(rename = "UserV2")]
+    #[serde(rename = "User")]
     User,
+    #[serde(rename = "UserV2")]
+    UserV2,
     #[serde(rename = "RoundUpdate")]
     RoundUpdate,
     #[serde(rename = "Flash")]
@@ -30,7 +32,8 @@ impl std::fmt::Display for LedgerTransactionType {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
             Self::Genesis => write!(f, "Genesis"),
-            Self::User => write!(f, "UserV2"),
+            Self::User => write!(f, "User"),
+            Self::UserV2 => write!(f, "UserV2"),
             Self::RoundUpdate => write!(f, "RoundUpdate"),
             Self::Flash => write!(f, "Flash"),
         }

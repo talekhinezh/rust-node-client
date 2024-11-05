@@ -11,8 +11,9 @@
 use crate::models;
 use serde::{Deserialize, Serialize};
 
+/// IntentHeaderV2 : The metadata common to both transaction intents and subintents.  The `min_proposer_timestamp_inclusive` and `max_proposer_timestamp_exclusive` are both optional. 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TransactionHeader {
+pub struct IntentHeaderV2 {
     /// The logical id of the network
     #[serde(rename = "network_id")]
     pub network_id: i32,
@@ -22,29 +23,25 @@ pub struct TransactionHeader {
     /// An integer between `0` and `10^10`, marking the epoch from which the transaction will no longer be valid, and be rejected. In the case of uncommitted transactions, a value of `10^10` indicates that the epoch was >= `10^10`. 
     #[serde(rename = "end_epoch_exclusive")]
     pub end_epoch_exclusive: i64,
-    /// An integer between `0` and `2^32 - 1`, chosen to allow a unique intent to be created (to enable submitting an otherwise identical/duplicate intent).  As of Cuttlefish and V2 transaction models, this is now referred to in documentation as the `intent_discriminator`. 
-    #[serde(rename = "nonce")]
-    pub nonce: i64,
-    #[serde(rename = "notary_public_key")]
-    pub notary_public_key: Box<models::PublicKey>,
-    /// Specifies whether the notary public key should be included in the transaction signers list
-    #[serde(rename = "notary_is_signatory")]
-    pub notary_is_signatory: bool,
-    /// An integer between `0` and `65535`, giving the validator tip as a percentage amount. A value of `1` corresponds to 1% of the fee.
-    #[serde(rename = "tip_percentage")]
-    pub tip_percentage: i32,
+    #[serde(rename = "min_proposer_timestamp_inclusive", skip_serializing_if = "Option::is_none")]
+    pub min_proposer_timestamp_inclusive: Option<Box<models::ScryptoInstant>>,
+    #[serde(rename = "max_proposer_timestamp_exclusive", skip_serializing_if = "Option::is_none")]
+    pub max_proposer_timestamp_exclusive: Option<Box<models::ScryptoInstant>>,
+    /// The string representation of an integer between `0` and `2^64 - 1`, which can be chosen to ensure that a unique intent can be created. It only needs to be unique for a particular intent content and epoch/timestamp, and can be safely selected randomly to very high probability.  This field was called `nonce` in the V1 models, but was a misleading name, as it got confused with a cryptographic nonce or an Ethereum-style nonce, and it is neither. 
+    #[serde(rename = "intent_discriminator")]
+    pub intent_discriminator: String,
 }
 
-impl TransactionHeader {
-    pub fn new(network_id: i32, start_epoch_inclusive: i64, end_epoch_exclusive: i64, nonce: i64, notary_public_key: models::PublicKey, notary_is_signatory: bool, tip_percentage: i32) -> TransactionHeader {
-        TransactionHeader {
+impl IntentHeaderV2 {
+    /// The metadata common to both transaction intents and subintents.  The `min_proposer_timestamp_inclusive` and `max_proposer_timestamp_exclusive` are both optional. 
+    pub fn new(network_id: i32, start_epoch_inclusive: i64, end_epoch_exclusive: i64, intent_discriminator: String) -> IntentHeaderV2 {
+        IntentHeaderV2 {
             network_id,
             start_epoch_inclusive,
             end_epoch_exclusive,
-            nonce,
-            notary_public_key: Box::new(notary_public_key),
-            notary_is_signatory,
-            tip_percentage,
+            min_proposer_timestamp_inclusive: None,
+            max_proposer_timestamp_exclusive: None,
+            intent_discriminator,
         }
     }
 }

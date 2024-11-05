@@ -12,35 +12,30 @@ use crate::models;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct TransactionIntent {
-    /// The hex-encoded transaction intent hash for a user transaction, also known as the transaction id. This hash identifies the core \"intent\" of the transaction. Each transaction intent can only be committed once. This hash gets signed by any signatories on the transaction, to create the signed intent. 
+pub struct SignedTransactionIntentV2 {
+    /// The hex-encoded signed intent hash for a user transaction. This hash identifies the transaction intent, plus additional signatures. This hash is signed by the notary, to create the submittable `NotarizedTransaction`. 
     #[serde(rename = "hash")]
     pub hash: String,
-    /// The Bech32m-encoded human readable `TransactionIntentHash`.
+    /// The Bech32m-encoded human readable `SignedTransactionIntentHash`.
     #[serde(rename = "hash_bech32m")]
     pub hash_bech32m: String,
-    #[serde(rename = "header")]
-    pub header: Box<models::TransactionHeader>,
-    /// The decompiled transaction manifest instructions. Only returned if enabled in `TransactionFormatOptions` on your request.
-    #[serde(rename = "instructions", skip_serializing_if = "Option::is_none")]
-    pub instructions: Option<String>,
-    /// A map of the hex-encoded blob hash, to hex-encoded blob content. Only returned if enabled in `TransactionFormatOptions` on your request.
-    #[serde(rename = "blobs_hex", skip_serializing_if = "Option::is_none")]
-    pub blobs_hex: Option<std::collections::HashMap<String, String>>,
-    /// The optional transaction message. Only returned if present and enabled in `TransactionFormatOptions` on your request.
-    #[serde(rename = "message", skip_serializing_if = "Option::is_none")]
-    pub message: Option<Box<models::TransactionMessage>>,
+    #[serde(rename = "transaction_intent")]
+    pub transaction_intent: Box<models::TransactionIntentV2>,
+    #[serde(rename = "transaction_intent_signatures")]
+    pub transaction_intent_signatures: Box<models::IntentSignatures>,
+    /// This gives the signatures for each subintent in `non_root_subintents` in `TransactionIntentV2`. For committed transactions, these arrays are of equal length and correspond one-to-one in order. 
+    #[serde(rename = "non_root_subintent_signatures")]
+    pub non_root_subintent_signatures: Vec<models::IntentSignatures>,
 }
 
-impl TransactionIntent {
-    pub fn new(hash: String, hash_bech32m: String, header: models::TransactionHeader) -> TransactionIntent {
-        TransactionIntent {
+impl SignedTransactionIntentV2 {
+    pub fn new(hash: String, hash_bech32m: String, transaction_intent: models::TransactionIntentV2, transaction_intent_signatures: models::IntentSignatures, non_root_subintent_signatures: Vec<models::IntentSignatures>) -> SignedTransactionIntentV2 {
+        SignedTransactionIntentV2 {
             hash,
             hash_bech32m,
-            header: Box::new(header),
-            instructions: None,
-            blobs_hex: None,
-            message: None,
+            transaction_intent: Box::new(transaction_intent),
+            transaction_intent_signatures: Box::new(transaction_intent_signatures),
+            non_root_subintent_signatures,
         }
     }
 }

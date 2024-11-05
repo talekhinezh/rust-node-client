@@ -32,8 +32,14 @@ pub enum LedgerTransaction {
         #[serde(rename = "payload_hex", skip_serializing_if = "Option::is_none")]
         payload_hex: Option<String>,
     },
-    #[serde(rename="UserV2")]
+    #[serde(rename="User")]
     UserLedgerTransaction {
+        /// The hex-encoded full ledger transaction payload. Only returned if enabled in TransactionFormatOptions on your request.
+        #[serde(rename = "payload_hex", skip_serializing_if = "Option::is_none")]
+        payload_hex: Option<String>,
+    },
+    #[serde(rename="UserV2")]
+    UserLedgerTransactionV2 {
         /// The hex-encoded full ledger transaction payload. Only returned if enabled in TransactionFormatOptions on your request.
         #[serde(rename = "payload_hex", skip_serializing_if = "Option::is_none")]
         payload_hex: Option<String>,

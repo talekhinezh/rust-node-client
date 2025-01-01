@@ -225,6 +225,10 @@ pub async fn transaction_submit_post(configuration: &configuration::Configuratio
     let local_var_uri_str = format!("{}/transaction/submit", local_var_configuration.base_path);
     let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
+    if let Some((ref user_name, Some(ref password))) = local_var_configuration.basic_auth {
+        local_var_req_builder = local_var_req_builder.basic_auth(user_name.to_string(), Some(password.to_string()));
+    }
+
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
